@@ -3,8 +3,8 @@ package com.example.taskvmg2.ui.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object TaskListScreen
+object TaskList
 @Serializable
-data class TaskDetailScreen(
+data class TaskDetail(
     val taskId : Int
 )
