@@ -12,13 +12,44 @@ class TaskViewModel : ViewModel() {
 
     var tasks by mutableStateOf(listOf<Task>())
         private set
-    var task by mutableStateOf<Task?>(null)
+
+    var id by mutableStateOf("")
+        private set
+    var title by mutableStateOf("")
+        private set
+    var completed by mutableStateOf(false)
+        private set
+
 
     init {
         loadTask()
     }
+
+    fun onIdChange(newId: String) {
+        this.id = newId
+    }
+    fun onTitleChange(newTitle: String) {
+        this.title = newTitle
+    }
+    fun onCompletedChange(newCompleted: Boolean) {
+        this.completed = newCompleted
+    }
+
     private fun loadTask() {
         tasks = repository.getTasks()
+    }
+    fun loanTask(taskId: Int?) {
+        if (taskId == null) {
+            clearForm()
+            return
+        } else {
+            val task = repository.getTaskId(taskId)
+            task?.let {
+                id = it.id.toString()
+                title = it.title
+                completed = it.completed
+            }
+        }
     }
     fun addTask(task: Task) {
         repository.addTask(task)
@@ -34,5 +65,8 @@ class TaskViewModel : ViewModel() {
     }
     fun getTaskId(id: Int): Task? {
         return repository.getTaskId(id)
+    }
+    fun clearForm(){
+
     }
 }
