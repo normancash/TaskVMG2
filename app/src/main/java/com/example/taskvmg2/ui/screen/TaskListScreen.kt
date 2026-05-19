@@ -41,12 +41,10 @@ import com.example.taskvmg2.ui.viewmodel.TaskViewModel
 fun TaskListScreen(navController: NavController,
                    viewModel: TaskViewModel = viewModel())
 {
-    var id by remember { mutableStateOf(0) }
-    var title by remember { mutableStateOf("") }
-    var idCompleted by remember { mutableStateOf(false) }
 
     Scaffold(
-       floatingActionButton = {
+        modifier = Modifier.fillMaxSize()
+       ,floatingActionButton = {
            FloatingActionButton(onClick = {
                navController.navigate(TaskDetail)
            }) {
@@ -58,6 +56,7 @@ fun TaskListScreen(navController: NavController,
        }
     )
     { padding ->
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Lista de tareas",
             style = MaterialTheme.typography.headlineMedium,
@@ -86,7 +85,6 @@ fun TaskListScreen(navController: NavController,
                             .fillMaxWidth()
                     )
                     {
-
                         Row(
                             modifier = Modifier.padding(2.dp).fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween

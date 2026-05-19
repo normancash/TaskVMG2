@@ -38,7 +38,7 @@ class TaskViewModel : ViewModel() {
     private fun loadTask() {
         tasks = repository.getTasks()
     }
-    fun loanTask(taskId: Int?) {
+    fun loadTask(taskId: Int?) {
         if (taskId == null) {
             clearForm()
             return
@@ -67,6 +67,8 @@ class TaskViewModel : ViewModel() {
         return repository.getTaskId(id)
     }
     fun clearForm(){
-
+        id=""
+        title=""
+        completed=false
     }
 }
