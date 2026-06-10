@@ -1,15 +1,33 @@
 package com.example.taskvmg2.ui.repository
 
 import com.example.taskvmg2.ui.model.Task
+import com.example.taskvmg2.ui.service.ApiResult
+import com.example.taskvmg2.ui.service.RetrofitClient
+import com.example.taskvmg2.ui.service.TaskService
 
-class TaskRepository {
+class TaskRepository(private val api : TaskService) {
+
     private val tasks = mutableListOf<Task>(
-           Task(1, "Task 1", false),
-           Task(2, "Task 2", true),
-           Task(3, "Task 3", false),
-           Task(4, "Task 4", true),
-           Task(5, "Task 5", false)
+           Task(1, "Task 1", false,""),
+           Task(2, "Task 2", true,""),
+           Task(3, "Task 3", false,""),
+           Task(4, "Task 4", true,""),
+           Task(5, "Task 5", false,"")
     )
+
+    suspend fun findAll(): ApiResult<List<Task>> {
+        return try {
+            val response = api.getTasks()
+            if (response.isSuccessful) {
+                ApiResult.Success(response.body() ?: emptyList())
+            }
+            else {
+                ApiResult.Error("Error HTTP ${response.code()}")
+            }
+        } catch (e: Exception) {
+            ApiResult.Error(e.message ?: "Unknown error")
+        }
+    }
 
     fun getTasks(): List<Task>  = tasks
 
