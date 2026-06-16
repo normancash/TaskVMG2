@@ -8,7 +8,7 @@ import com.example.taskvmg2.ui.repository.TaskRepository
 import com.example.taskvmg2.ui.model.Task
 
 class TaskViewModel : ViewModel() {
-    private val repository = TaskRepository()
+    private val repository = TaskRepositoryOld()
 
     var tasks by mutableStateOf(listOf<Task>())
         private set
