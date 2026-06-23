@@ -1,5 +1,6 @@
 package com.example.taskvmg2.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,33 +23,50 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.taskvmg2.ui.model.Task
-import com.example.taskvmg2.ui.viewmodel.TaskViewModel
+import com.example.taskvmg2.ui.viewmodel.TaskDetailEvent
+import com.example.taskvmg2.ui.viewmodel.TaskDetailViewModel
 
 @Composable
 fun TaskDetailScreen(
     navController: NavController,
-    taskId: Int?,
-    viewModel: TaskViewModel = viewModel()
+    taskId: String,
+    viewModel: TaskDetailViewModel
 ) {
+    val state by viewModel.state.collectAsState()
     LaunchedEffect(taskId) {
-        viewModel.loadTask(taskId)
+        viewModel.findById(taskId)
+    }
+    LaunchedEffect(Unit) {
+        viewModel.event.collect {
+            event ->
+            when (event) {
+                TaskDetailEvent.Saved -> {
+                    navController.popBackStack()
+                }
+                is TaskDetailEvent.Error -> {
+                    //Toast.makeText()
+                }
+            }
+        }
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Top
-    ) {
+    )
+    {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
@@ -135,9 +153,10 @@ fun TaskDetailScreen(
                        onClick = {
                             viewModel.addTask(
                                 Task(
-                                    id = viewModel.id.toInt(),
+                                    id = viewModel.id ,
                                     title = viewModel.title,
-                                    completed = viewModel.completed
+                                    completed = viewModel.completed,
+                                    description = ""
                                 )
                             )
                             navController.popBackStack()

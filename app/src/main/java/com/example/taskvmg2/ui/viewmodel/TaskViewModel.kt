@@ -4,8 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.taskvmg2.ui.repository.TaskRepository
+
 import com.example.taskvmg2.ui.model.Task
+import com.example.taskvmg2.ui.repository.TaskRepositoryOld
 
 class TaskViewModel : ViewModel() {
     private val repository = TaskRepositoryOld()
